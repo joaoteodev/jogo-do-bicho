@@ -31,6 +31,10 @@ body {
   gap: 1.8rem;
 }
 
+.balance {
+  margin-bottom: 1rem;
+}
+
 .input {
   width: 150px;
   padding: 8px 20px;
@@ -84,10 +88,13 @@ body {
   border-radius: 10px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
   #root {
     margin-top: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
 }

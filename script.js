@@ -9,16 +9,22 @@ const footer = document.createElement('h3')
 const inputNumber = document.createElement('input')
 const labelNumber = document.createElement('label')
 const gameStatus = document.createElement('h3')
-gameStatus.textContent = 'Status: aguardando jogada...'
+const currentBalance = document.createElement('h2')
 
 h1.setAttribute('class', 'title')
 h1.textContent = 'Jogo do bicho 😜'
+
+let balance = 0
+currentBalance.setAttribute('class', 'balance')
+currentBalance.textContent = `Saldo atual: R$ ${balance.toFixed(2)}`
+
+gameStatus.textContent = 'Status: aguardando jogada...'
 
 inputNumber.setAttribute('type', 'number')
 inputNumber.setAttribute('class', 'input')
 inputNumber.setAttribute('name', 'animalNumber')
 labelNumber.setAttribute('for', 'animalNumber')
-labelNumber.setAttribute('style', 'font-size: 1.3rem')
+labelNumber.setAttribute('style', 'font-size: 1rem')
 labelNumber.textContent = 'Digite um número entre 1 e 25'
 
 button.setAttribute('class', 'button')
@@ -161,6 +167,10 @@ const animals = [
   }
 ]
 
+function handleBalance(balance) {
+  currentBalance.textContent = `Saldo atual: R$ ${balance.toFixed(2)}`
+}
+
 function getRandomAnimal() {
   const randomNumber = Math.floor(Math.random() * 26)
   return animals[randomNumber]
@@ -171,15 +181,18 @@ function winOrLose(animlNumber, playerNumber) {
     // alert('You win. Congratulations!')
     gameStatus.textContent = 'Status: Você ganhou!! 🥳'
     gameStatus.style.color = 'green'
+    inputNumber.value = ''
+    return true
   } else {
     // alert('Oh no. You lose... Sorry.')
     gameStatus.textContent = 'Status: Hoje não... Tete novamente! 😝'
     gameStatus.style.color = 'red'
+    inputNumber.value = ''
+    return false
   }
-  inputNumber.value = ''
 }
 
-function swtichAnimal() {
+function switchAnimal() {
   const playerNumber = Number(inputNumber.value)
 
   if (playerNumber < 1 || playerNumber > 25) {
@@ -193,12 +206,25 @@ function swtichAnimal() {
   animalImage.setAttribute('src', url)
   animalNumber.textContent = 'Numero: ' + number
 
-  winOrLose(number, playerNumber)
+  let isWinner = winOrLose(number, playerNumber)
+  if (isWinner) {
+    balance += 10
+  } else {
+    balance -= 10
+  }
+
+  if (balance < -30) {
+    alert('Você atingiu o limite de saldo negativo! Tente novamente.')
+    location.reload()
+  }
+
+  handleBalance(balance)
 }
 
-button.addEventListener('click', swtichAnimal)
+button.addEventListener('click', switchAnimal)
 
 root.appendChild(h1)
+root.appendChild(currentBalance)
 root.appendChild(gameStatus)
 root.appendChild(labelNumber)
 root.appendChild(inputNumber)
