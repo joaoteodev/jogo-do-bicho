@@ -8,6 +8,8 @@ const animalNumber = document.createElement('h3')
 const footer = document.createElement('h3')
 const inputNumber = document.createElement('input')
 const labelNumber = document.createElement('label')
+const gameStatus = document.createElement('h3')
+gameStatus.textContent = 'Status: aguardando jogada...'
 
 h1.setAttribute('class', 'title')
 h1.textContent = 'Jogo do bicho 😜'
@@ -166,9 +168,13 @@ function getRandomAnimal() {
 
 function winOrLose(animlNumber, playerNumber) {
   if (animlNumber === playerNumber) {
-    alert('You win. Congratulations!')
+    // alert('You win. Congratulations!')
+    gameStatus.textContent = 'Status: Você ganhou!! 🥳'
+    gameStatus.style.color = 'green'
   } else {
-    alert('Oh no. You lose... Sorry.')
+    // alert('Oh no. You lose... Sorry.')
+    gameStatus.textContent = 'Status: Hoje não... Tete novamente! 😝'
+    gameStatus.style.color = 'red'
   }
   inputNumber.value = ''
 }
@@ -193,6 +199,7 @@ function swtichAnimal() {
 button.addEventListener('click', swtichAnimal)
 
 root.appendChild(h1)
+root.appendChild(gameStatus)
 root.appendChild(labelNumber)
 root.appendChild(inputNumber)
 root.appendChild(button)
