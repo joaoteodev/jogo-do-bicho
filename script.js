@@ -1,15 +1,17 @@
 const root = document.querySelector('#root')
 const h1 = document.createElement('h1')
+const currentBalance = document.createElement('h2')
+const gameStatus = document.createElement('h3')
+const labelNumber = document.createElement('label')
+const inputNumber = document.createElement('input')
 const button = document.createElement('button')
 const animalWrapper = document.createElement('div')
 const animalName = document.createElement('h2')
 const animalImage = document.createElement('img')
 const animalNumber = document.createElement('h3')
 const footer = document.createElement('h3')
-const inputNumber = document.createElement('input')
-const labelNumber = document.createElement('label')
-const gameStatus = document.createElement('h3')
-const currentBalance = document.createElement('h2')
+const inputMoney = document.createElement('input')
+const labelMoney = document.createElement('label')
 
 h1.setAttribute('class', 'title')
 h1.textContent = 'Jogo do bicho 😜'
@@ -17,6 +19,13 @@ h1.textContent = 'Jogo do bicho 😜'
 let balance = 0
 currentBalance.setAttribute('class', 'balance')
 currentBalance.textContent = `Saldo atual: R$ ${balance.toFixed(2)}`
+
+inputMoney.setAttribute('type', 'number')
+inputMoney.classList.add('input', 'inputMoney')
+inputMoney.setAttribute('name', 'moneyNumber')
+labelMoney.setAttribute('for', 'moneyNumber')
+labelMoney.setAttribute('style', 'font-size: 1rem')
+labelMoney.textContent = 'Insira um valor R$'
 
 gameStatus.textContent = 'Status: aguardando jogada...'
 
@@ -169,6 +178,7 @@ const animals = [
 
 function handleBalance(balance) {
   currentBalance.textContent = `Saldo atual: R$ ${balance.toFixed(2)}`
+  inputMoney.value = ''
 }
 
 function getRandomAnimal() {
@@ -194,6 +204,7 @@ function winOrLose(animlNumber, playerNumber) {
 
 function switchAnimal() {
   const playerNumber = Number(inputNumber.value)
+  const moneyNumber = Number(inputMoney.value)
 
   if (playerNumber < 1 || playerNumber > 25) {
     alert('Digite um numero entre 1 e 25.')
@@ -208,14 +219,28 @@ function switchAnimal() {
 
   let isWinner = winOrLose(number, playerNumber)
   if (isWinner) {
-    balance += 10
+    const odd = Math.round(Math.random() * (2 - 1) + 1)
+    const moneyWin = moneyNumber * odd
+    balance += moneyWin
+    alert(
+      `Você apostou R$ ${moneyNumber.toFixed(2)} no(a) ${
+        animals[playerNumber - 1].name
+      } e ganhou R$ ${moneyWin}! A ODD: ${odd}`
+    )
   } else {
-    balance -= 10
+    balance -= moneyNumber
+    alert(
+      `Você apostou R$ ${moneyNumber.toFixed(2)} no(a) ${
+        animals[playerNumber - 1].name
+      } e perdeu!`
+    )
   }
 
   if (balance < -30) {
     alert('Você atingiu o limite de saldo negativo! Tente novamente.')
-    location.reload()
+    setTimeout(() => {
+      location.reload()
+    }, 2000)
   }
 
   handleBalance(balance)
@@ -225,6 +250,8 @@ button.addEventListener('click', switchAnimal)
 
 root.appendChild(h1)
 root.appendChild(currentBalance)
+root.appendChild(labelMoney)
+root.appendChild(inputMoney)
 root.appendChild(gameStatus)
 root.appendChild(labelNumber)
 root.appendChild(inputNumber)
