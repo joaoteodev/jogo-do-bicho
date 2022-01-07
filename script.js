@@ -6,9 +6,18 @@ const animalName = document.createElement('h2')
 const animalImage = document.createElement('img')
 const animalNumber = document.createElement('h3')
 const footer = document.createElement('h3')
+const inputNumber = document.createElement('input')
+const labelNumber = document.createElement('label')
 
 h1.setAttribute('class', 'title')
 h1.textContent = 'Jogo do bicho 😜'
+
+inputNumber.setAttribute('type', 'number')
+inputNumber.setAttribute('class', 'input')
+inputNumber.setAttribute('name', 'animalNumber')
+labelNumber.setAttribute('for', 'animalNumber')
+labelNumber.setAttribute('style', 'font-size: 1.3rem')
+labelNumber.textContent = 'Digite um número entre 1 e 25'
 
 button.setAttribute('class', 'button')
 button.textContent = 'GIRAR'
@@ -19,10 +28,6 @@ animalImage.setAttribute(
   'src',
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCt2etsHo7ReHcHf-FZE7EXAKTEvhqicSdCw&usqp=CAU'
 )
-
-const a = document.createElement('a')
-a.href = 'http://youtube.com'
-a.innerHTML = 'for'
 
 footer.textContent = `Created by João Pedro 💙`
 
@@ -159,19 +164,37 @@ function getRandomAnimal() {
   return animals[randomNumber]
 }
 
+function winOrLose(animlNumber, playerNumber) {
+  if (animlNumber === playerNumber) {
+    alert('You win. Congratulations!')
+  } else {
+    alert('Oh no. You lose... Sorry.')
+  }
+  inputNumber.value = ''
+}
+
 function swtichAnimal() {
-  const randomAnimal = getRandomAnimal()
+  const playerNumber = Number(inputNumber.value)
+
+  if (playerNumber < 1 || playerNumber > 25) {
+    alert('Digite um numero entre 1 e 25.')
+    return null
+  }
+
+  const { name, url, number } = getRandomAnimal()
   animalName.textContent =
-    'Animal: ' +
-    randomAnimal.name.charAt(0).toUpperCase() +
-    randomAnimal.name.slice(1)
-  animalImage.setAttribute('src', randomAnimal.url)
-  animalNumber.textContent = 'Numero: ' + randomAnimal.number
+    'Animal: ' + name.charAt(0).toUpperCase() + name.toLowerCase().slice(1)
+  animalImage.setAttribute('src', url)
+  animalNumber.textContent = 'Numero: ' + number
+
+  winOrLose(number, playerNumber)
 }
 
 button.addEventListener('click', swtichAnimal)
 
 root.appendChild(h1)
+root.appendChild(labelNumber)
+root.appendChild(inputNumber)
 root.appendChild(button)
 root.appendChild(animalWrapper)
 animalWrapper.appendChild(animalName)
