@@ -16,7 +16,7 @@ const labelMoney = document.createElement('label')
 h1.setAttribute('class', 'title')
 h1.textContent = 'Jogo do bicho 😜'
 
-let balance = 0
+let balance = 100
 currentBalance.setAttribute('class', 'balance')
 currentBalance.textContent = `Saldo atual: R$ ${balance.toFixed(2)}`
 
@@ -195,7 +195,7 @@ function winOrLose(animlNumber, playerNumber) {
     return true
   } else {
     // alert('Oh no. You lose... Sorry.')
-    gameStatus.textContent = 'Status: Hoje não... Tete novamente! 😝'
+    gameStatus.textContent = 'Status: Hoje não... Tente novamente! 😝'
     gameStatus.style.color = 'red'
     inputNumber.value = ''
     return false
@@ -206,9 +206,19 @@ function switchAnimal() {
   const playerNumber = Number(inputNumber.value)
   const moneyNumber = Number(inputMoney.value)
 
+  if (moneyNumber > balance) {
+    alert('Valor inserido, maior que o saldo, tente um valor menor.')
+    return
+  }
+
   if (playerNumber < 1 || playerNumber > 25) {
     alert('Digite um numero entre 1 e 25.')
-    return null
+    return
+  }
+
+  if (moneyNumber < 0) {
+    alert('Valor inserido não aceito, favor verificar os dados novamente.')
+    return
   }
 
   const { name, url, number } = getRandomAnimal()
@@ -236,8 +246,8 @@ function switchAnimal() {
     )
   }
 
-  if (balance < -30) {
-    alert('Você atingiu o limite de saldo negativo! Tente novamente.')
+  if (balance < 1) {
+    alert('Você zerou o seu saldo! Tente novamente.')
     setTimeout(() => {
       location.reload()
     }, 2000)
